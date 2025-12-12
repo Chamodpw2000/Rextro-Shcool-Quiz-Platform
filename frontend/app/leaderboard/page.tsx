@@ -59,44 +59,31 @@ const Leaderboard: React.FC = () => {
   //   // For admins (userData), no additional checks needed
   // }, [router]);
 
-  useEffect(() => {
+useEffect(() => {
+  let intervalId: NodeJS.Timeout;
 
-
-    // Fetch leaderboard data from backend API
-    const fetchLeaderboard = async () => {
-
-      try {
-
-        const isAdmin = !!localStorage.getItem('userData') && !localStorage.getItem('studentData');
-        const api = isAdmin ? await createAdminApi() : await createStudentApi({ token: user.user?.authToken || '' });
-        const response: any = await api.get(`/quizzes/get-final-leaderboard`);
-        //console.log(response)
-
-        // Define the list of allowed schools
-      
-
-        
-
-        // Filter the data to include only allowed schools
-        
-        const filteredData = response.data.data.filter((school: any) => allowedSchools.includes(school.schoolName));
-
-        setSchools(transformLeaderboard(filteredData));
-
-      } catch (error) {
-
-        console.error('Error fetching leaderboard data:', error);
-
-      }
-
-
-
-
-
+  // Fetch leaderboard data from backend API
+  const fetchLeaderboard = async () => {
+    console.log("fetching leaderboard")
+    try {
+      const isAdmin = !!localStorage.getItem('userData') && !localStorage.getItem('studentData');
+      const api = isAdmin ? await createAdminApi() : await createStudentApi({ token: user.user?.authToken || '' });
+      const response: any = await api.get(`/quizzes/get-final-leaderboard`);
+      const filteredData = response.data.data.filter((school: any) => allowedSchools.includes(school.schoolName));
+      setSchools(transformLeaderboard(filteredData));
+    } catch (error) {
+      console.error('Error fetching leaderboard data:', error);
     }
+  };
 
-    fetchLeaderboard();
-  }, []);
+  fetchLeaderboard(); // Initial fetch
+
+  // Set up interval to fetch leaderboard every 10 seconds
+  intervalId = setInterval(fetchLeaderboard, 10000);
+
+  // Cleanup on unmount
+  return () => clearInterval(intervalId);
+}, [user.user?.authToken]);
 
   useEffect(() => {
     const checkPublishedStatus = async () => {
