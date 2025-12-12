@@ -82,7 +82,7 @@ const Footer = () => {
                 <FaFacebookF />
               </a>
               <a
-                href="https://linkedin.com"
+                href="https://www.linkedin.com/company/rextro2025/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-[#a67c52] transition-colors"
@@ -90,7 +90,7 @@ const Footer = () => {
                 <FaLinkedinIn />
               </a>
               <a
-                href="https://youtube.com"
+                href="https://www.youtube.com/@ReXtro-UniversityofRuhuna"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-[#a67c52] transition-colors"
